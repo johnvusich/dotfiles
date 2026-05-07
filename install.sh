@@ -40,7 +40,7 @@ ensure_apt_pkg() {
 
 ensure_pipx_pkg() {
   local pkg="$1"
-  if pipx list --short 2>/dev/null | grep -qx "$pkg"; then
+  if pipx list --short 2>/dev/null | grep -q "^$pkg\\b"; then
     log "Upgrading pipx package: $pkg"
     run pipx upgrade "$pkg"
   else
@@ -94,7 +94,7 @@ if [[ "$DRY_RUN" == "1" ]]; then
   log "DRY_RUN: skipping version checks"
 else
   if command -v java >/dev/null 2>&1; then
-    bash -lc 'java -version 2>&1 | head -n 1'
+    java -version 2>&1 | head -n 1
   else
     log "java not found"
   fi
