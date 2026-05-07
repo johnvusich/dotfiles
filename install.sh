@@ -71,6 +71,11 @@ else
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
+if ! command -v pipx >/dev/null 2>&1; then
+  log "pipx is required but was not found in PATH"
+  exit 1
+fi
+
 run pipx ensurepath
 
 ensure_pipx_pkg nf-core
