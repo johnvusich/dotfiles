@@ -2,6 +2,15 @@
 set -euo pipefail
 
 DRY_RUN="${DRY_RUN:-0}"
+tmp_dir=""
+
+cleanup() {
+  if [[ -n "$tmp_dir" && -d "$tmp_dir" ]]; then
+    rm -rf "$tmp_dir"
+  fi
+}
+
+trap cleanup EXIT
 
 log() {
   echo "[install] $*"
@@ -40,7 +49,7 @@ ensure_apt_pkg() {
 
 ensure_pipx_pkg() {
   local pkg="$1"
-  if pipx list --short 2>/dev/null | grep -q "^$pkg\\b"; then
+  if pipx list --short 2>/dev/null | awk '{print $1}' | grep -Fxq "$pkg"; then
     log "Upgrading pipx package: $pkg"
     run pipx upgrade "$pkg"
   else
@@ -78,7 +87,6 @@ else
     log "DRY_RUN: chmod +x $HOME/.local/bin/nextflow"
   else
     tmp_dir="$(mktemp -d)"
-    trap 'rm -rf "$tmp_dir"' EXIT
     (
       cd "$tmp_dir"
       curl -fsSL https://get.nextflow.io | bash
