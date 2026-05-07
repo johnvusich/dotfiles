@@ -1,6 +1,6 @@
 # dotfiles
 
-Bootstrap script for GitHub Codespaces used to maintain nf-core pipeline repositories (primarily [nf-core/circdna](https://github.com/nf-core/circdna)).
+Bootstrap script for GitHub Codespaces used to maintain nf-core pipeline repositories.
 
 ## Usage
 
