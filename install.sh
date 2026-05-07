@@ -50,8 +50,7 @@ ensure_apt_pkg() {
 ensure_pipx_pkg() {
   local pkg="$1"
   if pipx list --short 2>/dev/null | awk '{print $1}' | grep -Fxq "$pkg"; then
-    log "Upgrading pipx package: $pkg"
-    run pipx upgrade "$pkg"
+    log "pipx package already installed: $pkg"
   else
     log "Installing pipx package: $pkg"
     run pipx install "$pkg"
