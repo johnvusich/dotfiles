@@ -90,9 +90,32 @@ else
 fi
 
 log "Installed tool versions"
-run bash -lc 'java -version 2>&1 | head -n 1'
-run nf-core --version
-run pre-commit --version
-run nextflow -version
+if [[ "$DRY_RUN" == "1" ]]; then
+  log "DRY_RUN: skipping version checks"
+else
+  if command -v java >/dev/null 2>&1; then
+    bash -lc 'java -version 2>&1 | head -n 1'
+  else
+    log "java not found"
+  fi
+
+  if command -v nf-core >/dev/null 2>&1; then
+    nf-core --version
+  else
+    log "nf-core not found"
+  fi
+
+  if command -v pre-commit >/dev/null 2>&1; then
+    pre-commit --version
+  else
+    log "pre-commit not found"
+  fi
+
+  if command -v nextflow >/dev/null 2>&1; then
+    nextflow -version
+  else
+    log "nextflow not found"
+  fi
+fi
 
 log "Setup complete"
